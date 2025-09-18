@@ -12,10 +12,10 @@
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: #faf9f7;
-            background: linear-gradient(135deg, #581c87 0%, #7c2d12 50%, #92400e 100%);
+            color: #f7fafc;
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 50%, #4a5568 100%);
             padding: 20px;
             min-height: 100vh;
         }
@@ -23,78 +23,85 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: rgba(15, 23, 42, 0.95);
-            border-radius: 20px;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            padding: 48px;
+            background: #2d3748;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            padding: 40px;
+            border: 1px solid #4a5568;
         }
         
         h1 {
             text-align: center;
-            margin-bottom: 48px;
-            color: #fbbf24;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #68d391, #4fd1c7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             font-size: 2.5rem;
             font-weight: 700;
-            text-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
         }
         
-        /* Project Management */
+        /* Project Management - Always Visible */
         .project-section {
-            background: linear-gradient(135deg, rgba(180, 83, 9, 0.2) 0%, rgba(146, 64, 14, 0.1) 100%);
-            border: 1px solid rgba(180, 83, 9, 0.4);
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 40px;
+            background: linear-gradient(135deg, #553c9a 0%, #6b46c1 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            color: #f7fafc;
+            box-shadow: 0 8px 32px rgba(107, 70, 193, 0.3);
         }
         
         .project-section h2 {
-            color: #fbbf24;
-            margin-bottom: 24px;
+            color: #f7fafc;
+            margin-bottom: 20px;
             font-weight: 600;
-            font-size: 1.5rem;
         }
         
-        /* Form Sections */
+        /* Form Sections - Collapsible */
         .form-section {
-            border: 1px solid rgba(185, 28, 28, 0.3);
-            border-radius: 16px;
-            margin-bottom: 20px;
+            border: none;
+            border-radius: 12px;
+            margin-bottom: 15px;
             overflow: hidden;
-            background: rgba(30, 41, 59, 0.6);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            background: #4a5568;
         }
         
         .section-header {
-            background: linear-gradient(135deg, rgba(185, 28, 28, 0.2) 0%, rgba(153, 27, 27, 0.1) 100%);
-            padding: 20px 28px;
+            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+            padding: 18px 25px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
             user-select: none;
             transition: all 0.3s ease;
-            border-bottom: 1px solid rgba(185, 28, 28, 0.2);
+            color: #f7fafc;
         }
         
         .section-header:hover {
-            background: linear-gradient(135deg, rgba(185, 28, 28, 0.3) 0%, rgba(153, 27, 27, 0.2) 100%);
+            background: linear-gradient(135deg, #0a6b4f 0%, #059669 100%);
+            transform: translateY(-1px);
         }
         
         .section-title {
-            font-size: 1.1rem;
+            font-size: 18px;
             font-weight: 600;
-            color: #fca5a5;
+            color: #f7fafc;
         }
         
         .section-arrow {
-            font-size: 16px;
+            font-size: 14px;
             transition: transform 0.3s ease;
-            color: #fca5a5;
+            color: rgba(247, 250, 252, 0.9);
         }
         
         .section-content {
-            padding: 32px;
+            padding: 25px;
             display: none;
+            background: #4a5568;
+            color: #f7fafc;
         }
         
         .form-section.open .section-content {
@@ -107,13 +114,13 @@
         
         /* Form Elements */
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
         
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
+            gap: 20px;
         }
         
         @media (max-width: 768px) {
@@ -126,103 +133,99 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #fbbf24;
+            color: #e2e8f0;
             font-size: 14px;
         }
         
         input, textarea, select {
             width: 100%;
-            padding: 16px 20px;
-            border: 2px solid rgba(251, 191, 36, 0.2);
-            border-radius: 12px;
-            font-size: 15px;
+            padding: 14px 16px;
+            border: 2px solid #718096;
+            border-radius: 8px;
+            font-size: 14px;
             transition: all 0.3s ease;
-            background: rgba(30, 41, 59, 0.8);
-            color: #faf9f7;
-            font-family: inherit;
+            background: #2d3748;
+            color: #f7fafc;
         }
         
         input:focus, textarea:focus, select:focus {
             outline: none;
-            border-color: #fbbf24;
-            box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.1);
-            background: rgba(30, 41, 59, 0.95);
+            border-color: #68d391;
+            box-shadow: 0 0 0 3px rgba(104, 211, 145, 0.2);
+            transform: translateY(-1px);
         }
         
         textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 80px;
         }
         
         .btn {
-            padding: 14px 28px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 12px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 500;
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-family: inherit;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
-        .btn-emerald { 
+        .btn-green { 
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            color: #B2D7C7;
+        }
+        .btn-green:hover { 
+            background: linear-gradient(135deg, #059669 0%, #0a6b4f 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(4, 120, 87, 0.4);
+        }
+        
+        .btn-blue { 
+            background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+            color: ##33A7B5;
+        }
+        .btn-blue:hover { 
+            background: linear-gradient(135deg, #2563eb 0%, #4338ca 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4);
+        }
+        
+        .btn-red { 
+            background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
+            color: #f7fafc;
+        }
+        .btn-red:hover { 
             background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
-            color: #fef2f2;
-            box-shadow: 0 4px 20px rgba(185, 28, 28, 0.3);
-        }
-        .btn-emerald:hover { 
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(185, 28, 28, 0.4);
-        }
-        
-        .btn-sapphire { 
-            background: linear-gradient(135deg, #7c2d12 0%, #92400e 100%);
-            color: #fef7ed;
-            box-shadow: 0 4px 20px rgba(124, 45, 18, 0.3);
-        }
-        .btn-sapphire:hover { 
-            background: linear-gradient(135deg, #9a3412 0%, #a16207 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(124, 45, 18, 0.4);
-        }
-        
-        .btn-garnet { 
-            background: linear-gradient(135deg, #581c87 0%, #6b21a8 100%);
-            color: #faf5ff;
-            box-shadow: 0 4px 20px rgba(88, 28, 135, 0.3);
-        }
-        .btn-garnet:hover { 
-            background: linear-gradient(135deg, #6b21a8 0%, #7c3aed 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(88, 28, 135, 0.4);
+            box-shadow: 0 8px 25px rgba(153, 27, 27, 0.4);
         }
         
         .btn-small {
-            padding: 10px 20px;
-            font-size: 13px;
+            padding: 6px 12px;
+            font-size: 12px;
         }
         
         /* Array handling */
         .array-container {
-            border: 2px solid rgba(251, 191, 36, 0.2);
-            border-radius: 12px;
-            padding: 24px;
-            background: rgba(30, 41, 59, 0.4);
+            border: 2px solid #718096;
+            border-radius: 8px;
+            padding: 20px;
+            background: linear-gradient(135deg, #553c9a 0%, #6b46c1 100%);
         }
         
         .array-item {
             display: flex;
-            gap: 16px;
-            margin-bottom: 16px;
+            gap: 10px;
+            margin-bottom: 12px;
             align-items: center;
         }
         
         .array-item input {
             flex: 1;
+            background: #2d3748;
+            border-color: #718096;
+            color: #f7fafc;
         }
         
         /* Project items */
@@ -230,198 +233,100 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
-            border: 2px solid rgba(180, 83, 9, 0.3);
-            border-radius: 12px;
-            margin-bottom: 16px;
-            background: rgba(30, 41, 59, 0.6);
+            padding: 16px;
+            border: 2px solid rgba(113, 128, 150, 0.3);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            background: rgba(45, 55, 72, 0.6);
+            backdrop-filter: blur(10px);
             transition: all 0.3s ease;
+            color: #f7fafc;
         }
         
         .project-item:hover {
-            border-color: rgba(180, 83, 9, 0.5);
-            background: rgba(30, 41, 59, 0.8);
-            transform: translateY(-1px);
+            background: rgba(74, 85, 104, 0.8);
+            transform: translateY(-2px);
         }
         
         .project-item.current {
-            border-color: #fbbf24;
-            background: rgba(251, 191, 36, 0.1);
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
-        }
-        
-        .project-item strong {
-            color: #fbbf24;
-        }
-        
-        .project-item small {
-            color: #94a3b8;
+            background: rgba(104, 211, 145, 0.2);
+            border-color: rgba(104, 211, 145, 0.6);
+            box-shadow: 0 8px 25px rgba(104, 211, 145, 0.2);
         }
         
         /* Documents grid */
         .documents-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
         }
         
         .document-card {
-            border: 2px solid rgba(124, 45, 18, 0.4);
-            border-radius: 16px;
-            padding: 24px;
-            background: rgba(30, 41, 59, 0.6);
-            transition: all 0.3s ease;
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+            box-shadow: 0 8px 32px rgba(30, 64, 175, 0.3);
+            transition: transform 0.3s ease;
+            color: #f7fafc;
         }
         
         .document-card:hover {
-            border-color: rgba(124, 45, 18, 0.6);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
         }
         
         .document-card h4 {
-            margin-bottom: 20px;
-            color: #fed7aa;
+            margin-bottom: 15px;
+            color: #f7fafc;
             font-weight: 600;
-            font-size: 1.1rem;
+        }
+        
+        .document-card input, .document-card textarea {
+            background: white;
+            color: #2d3748;
         }
         
         /* JSON output */
         .json-output {
-            background: rgba(15, 23, 42, 0.8);
-            border: 2px solid rgba(251, 191, 36, 0.3);
-            border-radius: 16px;
-            padding: 24px;
-        }
-        
-        .json-output h4 {
-            color: #fbbf24;
-            margin-bottom: 20px;
-            font-weight: 600;
-            font-size: 1.2rem;
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            border: 2px solid #4a5568;
+            border-radius: 12px;
+            padding: 20px;
+            color: #f7fafc;
+            box-shadow: 0 8px 32px rgba(26, 32, 44, 0.5);
         }
         
         .json-output pre {
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(26, 32, 44, 0.8);
             padding: 20px;
-            border-radius: 12px;
+            border-radius: 8px;
             overflow-x: auto;
-            font-family: 'JetBrains Mono', 'Monaco', 'Menlo', monospace;
-            font-size: 13px;
-            max-height: 500px;
-            color: #fbbf24;
-            border: 1px solid rgba(251, 191, 36, 0.3);
-            line-height: 1.6;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            color: #68d391;
+            backdrop-filter: blur(10px);
+            border: 1px solid #4a5568;
         }
         
         .status-message {
-            padding: 16px 24px;
-            border-radius: 12px;
-            margin-top: 20px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-top: 15px;
             display: none;
-            font-size: 15px;
             font-weight: 500;
         }
         
         .status-success {
-            background: rgba(185, 28, 28, 0.2);
-            color: #fca5a5;
-            border: 2px solid rgba(185, 28, 28, 0.4);
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            color: #f7fafc;
+            box-shadow: 0 4px 20px rgba(4, 120, 87, 0.3);
         }
         
         .status-error {
-            background: rgba(88, 28, 135, 0.2);
-            color: #d8b4fe;
-            border: 2px solid rgba(88, 28, 135, 0.4);
-        }
-        
-        /* Facility controls */
-        .facility-controls {
-            background: linear-gradient(135deg, rgba(88, 28, 135, 0.2) 0%, rgba(107, 33, 168, 0.1) 100%);
-            border: 2px solid rgba(88, 28, 135, 0.4);
-            padding: 28px;
-            border-radius: 16px;
-            margin-bottom: 32px;
-        }
-        
-        .facility-controls strong {
-            color: #d8b4fe;
-            font-size: 1.1rem;
-        }
-        
-        /* Current project display */
-        .current-project {
-            background: rgba(251, 191, 36, 0.1);
-            border: 2px solid rgba(251, 191, 36, 0.3);
-            border-radius: 12px;
-            padding: 16px 20px;
-            margin-bottom: 20px;
-        }
-        
-        .current-project strong {
-            color: #fbbf24;
-        }
-        
-        .current-project span {
-            color: #cbd5e1;
-        }
-        
-        /* File input styling */
-        input[type="file"] {
-            padding: 16px;
-            background: rgba(30, 41, 59, 0.6);
-            border: 2px dashed rgba(251, 191, 36, 0.4);
-            border-radius: 12px;
-            color: #cbd5e1;
-        }
-        
-        input[type="file"]::-webkit-file-upload-button {
-            background: #fbbf24;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 16px;
-            margin-right: 16px;
-            color: #0f172a;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        
-        input[type="file"]::-webkit-file-upload-button:hover {
-            background: #f59e0b;
-        }
-        
-        /* Checkbox styling */
-        input[type="checkbox"] {
-            width: auto;
-            margin-right: 12px;
-            accent-color: #fbbf24;
-            transform: scale(1.2);
-        }
-        
-        /* Helper text */
-        .help-text {
-            font-size: 13px;
-            color: #94a3b8;
-            margin-top: 8px;
-            font-style: italic;
-        }
-        
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: rgba(30, 41, 59, 0.3);
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: rgba(251, 191, 36, 0.6);
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(251, 191, 36, 0.8);
+            background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
+            color: #f7fafc;
+            box-shadow: 0 4px 20px rgba(153, 27, 27, 0.3);
         }
     </style>
 </head>
@@ -429,37 +334,37 @@
     <div class="container">
         <h1>Facility Data Entry Form</h1>
         
-        <!-- Project Management Section -->
+        <!-- Project Management Section - Always Visible -->
         <div class="project-section">
             <h2>Projects & Data Import</h2>
             
             <div class="form-group">
                 <label>Project Management</label>
-                <div style="display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;">
-                    <input type="text" id="project-name" placeholder="Enter project name..." style="flex: 1; min-width: 250px;">
-                    <button class="btn btn-emerald" onclick="saveProject()">Save Project</button>
-                    <button class="btn btn-sapphire" onclick="newProject()">New Project</button>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+                    <input type="text" id="project-name" placeholder="Enter project name..." style="flex: 1; min-width: 200px;">
+                    <button class="btn btn-green" onclick="saveProject()">Save Project</button>
+                    <button class="btn btn-blue" onclick="newProject()">New Project</button>
                 </div>
                 
-                <div id="current-project" class="current-project" style="display: none;">
+                <div id="current-project" style="background: #f0f9ff; padding: 10px; border-radius: 6px; margin-bottom: 15px; display: none;">
                     <strong>Current:</strong> <span id="current-name">Untitled</span>
-                    <span style="font-size: 13px; margin-left: 16px;" id="last-saved">Never saved</span>
+                    <span style="font-size: 12px; color: #64748b; margin-left: 10px;" id="last-saved">Never saved</span>
                 </div>
                 
                 <div id="projects-list"></div>
             </div>
             
-            <hr style="margin: 32px 0; border: none; border-top: 1px solid rgba(16, 185, 129, 0.3);">
+            <hr style="margin: 20px 0; border: 1px solid #e2e8f0;">
             
             <div class="form-group">
                 <label>Import JSON Data</label>
                 <input type="file" id="json-file" accept=".json,.txt" onchange="importFile(event)">
-                <p class="help-text">Upload any JSON file - works with messy formats too!</p>
+                <p style="color: #6b7280; font-size: 14px; margin-top: 8px;">Upload any JSON file - works with messy formats too!</p>
                 
-                <textarea id="json-paste" rows="4" placeholder="Or paste JSON data here..." style="margin-top: 20px;"></textarea>
-                <div style="display: flex; gap: 16px; margin-top: 16px;">
-                    <button class="btn btn-sapphire" onclick="importJSON()">Import</button>
-                    <button class="btn btn-garnet" onclick="clearForm()">Clear All</button>
+                <textarea id="json-paste" rows="4" placeholder="Or paste JSON data here..." style="margin-top: 15px;"></textarea>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button class="btn btn-blue" onclick="importJSON()">Import</button>
+                    <button class="btn btn-red" onclick="clearForm()">Clear All</button>
                 </div>
             </div>
             
@@ -467,18 +372,18 @@
         </div>
         
         <!-- Facility Controls -->
-        <div class="facility-controls">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-                <strong>Facility: <span id="facility-counter">1 of 1</span></strong>
-                <div style="display: flex; gap: 16px;">
-                    <button class="btn btn-emerald" onclick="addFacility()">Add Facility</button>
-                    <button class="btn btn-garnet" onclick="removeFacility()" id="remove-btn" style="display: none;">Remove Current</button>
+        <div id="facility-controls" style="background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%); padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 8px 32px rgba(30, 64, 175, 0.4); color: #f7fafc;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                <strong style="color: #f7fafc; font-size: 16px;">Facility: <span id="facility-counter">1 of 1</span></strong>
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-green" onclick="addFacility()">Add Facility</button>
+                    <button class="btn btn-red" onclick="removeFacility()" id="remove-btn" style="display: none;">Remove Current</button>
                 </div>
             </div>
-            <div id="facility-tabs" style="margin-top: 20px; display: none; gap: 12px;"></div>
+            <div id="facility-tabs" style="margin-top: 20px; display: none;"></div>
         </div>
         
-        <!-- Form Sections -->
+        <!-- Form Sections - These are collapsible -->
         <div class="form-section open" id="operator-section">
             <div class="section-header" onclick="toggleSection('operator-section')">
                 <h3 class="section-title">Operator Information</h3>
@@ -689,11 +594,11 @@
             </div>
             <div class="section-content">
                 <div class="json-output">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h4>Generated JSON</h4>
-                        <div style="display: flex; gap: 16px;">
-                            <button class="btn btn-sapphire btn-small" onclick="copyJSON()">Copy</button>
-                            <button class="btn btn-emerald btn-small" onclick="downloadJSON()">Download</button>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-blue btn-small" onclick="copyJSON()">Copy</button>
+                            <button class="btn btn-green btn-small" onclick="downloadJSON()">Download</button>
                         </div>
                     </div>
                     <pre id="json-display">{}</pre>
@@ -775,16 +680,16 @@
                 div.className = 'array-item';
                 div.innerHTML = `
                     <input type="text" value="${item}" onchange="updateArrayItem('${path}', ${index}, this.value)">
-                    <button class="btn btn-garnet btn-small" onclick="removeArrayItem('${path}', ${index})">Remove</button>
+                    <button class="btn btn-red btn-small" onclick="removeArrayItem('${path}', ${index})">Remove</button>
                 `;
                 container.appendChild(div);
             });
             
             const addBtn = document.createElement('button');
-            addBtn.className = 'btn btn-emerald';
+            addBtn.className = 'btn btn-green';
             addBtn.textContent = 'Add Item';
             addBtn.style.width = '100%';
-            addBtn.style.marginTop = '16px';
+            addBtn.style.marginTop = '10px';
             addBtn.onclick = () => addArrayItem(path);
             container.appendChild(addBtn);
         }
@@ -827,11 +732,11 @@
                 
                 card.innerHTML = `
                     <h4>${title}</h4>
-                    <label style="display: flex; align-items: center; margin-bottom: 16px; cursor: pointer;">
-                        <input type="checkbox" ${docData.available ? 'checked' : ''} onchange="updateDocument('${docType}', 'available', this.checked)">
+                    <label style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <input type="checkbox" ${docData.available ? 'checked' : ''} onchange="updateDocument('${docType}', 'available', this.checked)" style="margin-right: 8px;">
                         Available
                     </label>
-                    <div style="margin-bottom: 16px;">
+                    <div style="margin-bottom: 10px;">
                         <label>${isManual ? 'Year' : 'Count'}</label>
                         <input type="number" value="${isManual ? (docData.year || '') : (docData.count || '')}" onchange="updateDocument('${docType}', '${isManual ? 'year' : 'count'}', this.value)">
                     </div>
@@ -895,21 +800,20 @@
             const tabs = document.getElementById('facility-tabs');
             
             counter.textContent = `${currentFacilityIndex + 1} of ${formData.facilities.length}`;
-            removeBtn.style.display = formData.facilities.length > 1 ? 'inline-flex' : 'none';
+            removeBtn.style.display = formData.facilities.length > 1 ? 'inline-block' : 'none';
             
             if (formData.facilities.length > 1) {
                 tabs.style.display = 'flex';
                 tabs.innerHTML = '';
                 formData.facilities.forEach((_, index) => {
                     const btn = document.createElement('button');
-                    btn.className = `btn btn-small ${index === currentFacilityIndex ? 'btn-sapphire' : ''}`;
-                    if (index !== currentFacilityIndex) {
-                        btn.style.background = 'rgba(30, 41, 59, 0.8)';
-                        btn.style.color = '#cbd5e1';
-                        btn.style.border = '2px solid rgba(180, 83, 9, 0.4)';
-                    }
+                    btn.className = `btn ${index === currentFacilityIndex ? 'btn-blue' : ''} btn-small`;
+                    btn.style.backgroundColor = index === currentFacilityIndex ? '' : '#4a5568';
+                    btn.style.color = '#f7fafc';
+                    btn.style.border = '1px solid #718096';
                     btn.textContent = `Facility ${index + 1}`;
                     btn.onclick = () => switchFacility(index);
+                    btn.style.marginRight = '10px';
                     tabs.appendChild(btn);
                 });
             } else {
@@ -1084,7 +988,7 @@
             const projects = Object.values(getProjects()).sort((a, b) => new Date(b.updated) - new Date(a.updated));
             
             if (projects.length === 0) {
-                container.innerHTML = '<p style="color: #94a3b8; font-style: italic; font-size: 15px;">No saved projects.</p>';
+                container.innerHTML = '<p style="color: #6b7280; font-style: italic;">No saved projects.</p>';
                 return;
             }
             
@@ -1098,14 +1002,14 @@
                     <div class="project-item ${isCurrent ? 'current' : ''}">
                         <div>
                             <strong>${project.name}</strong><br>
-                            <small>
+                            <small style="color: #6b7280;">
                                 ${operator ? operator + ' • ' : ''}${facilities} facilities • ${date}
                             </small>
                         </div>
-                        <div style="display: flex; gap: 12px;">
-                            ${!isCurrent ? `<button class="btn btn-sapphire btn-small" onclick="loadProject('${project.id}')">Load</button>` : '<span style="font-size: 13px; color: #fbbf24;">Current</span>'}
-                            <button class="btn btn-emerald btn-small" onclick="exportProject('${project.id}')">Export</button>
-                            <button class="btn btn-garnet btn-small" onclick="deleteProject('${project.id}')">Delete</button>
+                        <div style="display: flex; gap: 5px;">
+                            ${!isCurrent ? `<button class="btn btn-blue btn-small" onclick="loadProject('${project.id}')">Load</button>` : '<span style="font-size: 12px; color: #2563eb;">Current</span>'}
+                            <button class="btn btn-green btn-small" onclick="exportProject('${project.id}')">Export</button>
+                            <button class="btn btn-red btn-small" onclick="deleteProject('${project.id}')">Delete</button>
                         </div>
                     </div>
                 `;
@@ -1137,6 +1041,7 @@
                 
                 // Adapt various JSON structures
                 if (!data.operator || !data.facilities) {
+                    // Try to adapt the structure
                     const adapted = {
                         operator: { name: "", location: "", operatingPeriod: "" },
                         facilities: []
