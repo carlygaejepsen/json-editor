@@ -97,7 +97,7 @@
         }
         
         .btn-green:hover {
-            background: #33A7B5;
+            background: #2a8c96;
         }
         
         .btn-red {
@@ -106,7 +106,7 @@
         }
         
         .btn-red:hover {
-            background: #33A7B5;
+            background: #2a8c96;
         }
         
         .btn-blue {
@@ -115,7 +115,7 @@
         }
         
         .btn-blue:hover {
-            background: #33A7B5;
+            background: #2a8c96;
         }
         
         .section {
@@ -147,7 +147,7 @@
         
         .section-toggle {
             font-size: 20px;
-            color: #33A7B5;
+            color: #64748b;
             transition: transform 0.2s;
         }
         
@@ -196,7 +196,7 @@
         input, textarea, select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #33A7B5;
+            border: 1px solid #d1d5db;
             border-radius: 6px;
             font-size: 14px;
             transition: border-color 0.2s, box-shadow 0.2s;
@@ -204,8 +204,8 @@
         
         input:focus, textarea:focus, select:focus {
             outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            border-color: #33A7B5;
+            box-shadow: 0 0 0 3px rgba(51, 167, 181, 0.1);
         }
         
         textarea {
@@ -248,7 +248,7 @@
         }
         
         .add-item-btn:hover {
-            background: #33A7B5;
+            background: #2a8c96;
         }
         
         .document-grid {
@@ -318,11 +318,11 @@
         }
         
         .copy-btn:hover {
-            background: #33A7B5;
+            background: #2a8c96;
         }
         
         .copy-btn:active {
-            background: #33A7B5;
+            background: #2a8c96;
         }
         
         .upload-status {
@@ -335,19 +335,19 @@
         
         .upload-status.success {
             background-color: #dcfce7;
-            color: #166534;
+            color: #33A7B5;
             border: 1px solid #bbf7d0;
         }
         
         .upload-status.error {
             background-color: #fef2f2;
-            color: #dc2626;
+            color: #33A7B5;
             border: 1px solid #fecaca;
         }
         
         .upload-status.info {
             background-color: #dbeafe;
-            color: #1e40af;
+            color: #33A7B5;
             border: 1px solid #93c5fd;
         }
         
@@ -361,14 +361,14 @@
         }
         
         input[type="file"]:hover {
-            border-color: #2563eb;
+            border-color: #33A7B5;
             background: #eff6ff;
         }
         
         input[type="file"]:focus {
             outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            border-color: #33A7B5;
+            box-shadow: 0 0 0 3px rgba(51, 167, 181, 0.1);
         }
         
         .project-item {
@@ -390,7 +390,7 @@
         
         .project-item.current {
             background: #eff6ff;
-            border-color: #2563eb;
+            border-color: #33A7B5;
         }
         
         .project-info {
@@ -405,7 +405,7 @@
         
         .project-meta {
             font-size: 12px;
-            color: #33A7B5;
+            color: #6b7280;
         }
         
         .project-actions {
@@ -429,12 +429,12 @@
 
         .debug-info {
             background: #fef7cd;
-            border: 1px solid #f59e0b;
+            border: 1px solid #33A7B5;
             border-radius: 6px;
             padding: 10px;
             margin-top: 10px;
             font-size: 12px;
-            color: #92400e;
+            color: #33A7B5;
             max-height: 200px;
             overflow-y: auto;
         }
@@ -907,11 +907,54 @@
                 cleaned = cleaned.replace(/\/\*[\s\S]*?\*\//g, '');
                 cleaned = cleaned.replace(/\/\/.*$/gm, '');
                 
+                // Fix control characters in strings - this is the key fix for the parsing error
+                // Replace literal newlines, tabs, and other control characters within quoted strings
+                cleaned = cleaned.replace(/"([^"]*?)\\n\\n([^"]*?)"/g, '"$1 $2"'); // Remove double newlines
+                cleaned = cleaned.replace(/"([^"]*?)\\n([^"]*?)"/g, '"$1 $2"');     // Remove single newlines
+                cleaned = cleaned.replace(/"([^"]*?)\\t([^"]*?)"/g, '"$1 $2"');     // Remove tabs
+                
+                // Handle actual newline/tab characters (not escaped) within strings
+                cleaned = cleaned.replace(/"([^"]*?)\n\n([^"]*?)"/g, '"$1 $2"');
+                cleaned = cleaned.replace(/"([^"]*?)\n([^"]*?)"/g, '"$1 $2"');
+                cleaned = cleaned.replace(/"([^"]*?)\t([^"]*?)"/g, '"$1 $2"');
+                
+                // Remove other control characters that might cause issues
+                cleaned = cleaned.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ' ');
+                
                 // Fix unquoted keys (be more specific to avoid breaking strings)
                 cleaned = cleaned.replace(/([{,]\s*)([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=:)/g, '$1"$2"');
                 
-                // Remove trailing commas
+                // Remove trailing commas (more comprehensive)
                 cleaned = cleaned.replace(/,(\s*[}\]])/g, '$1');
+                
+                // Fix malformed JSON endings - handle cases like "},\n}" or "},]}" 
+                cleaned = cleaned.replace(/,\s*}\s*,\s*$/g, '}'); // Remove trailing },}
+                cleaned = cleaned.replace(/,\s*}\s*$/g, '}');     // Remove trailing },
+                cleaned = cleaned.replace(/,\s*]\s*,\s*$/g, ']'); // Remove trailing ],}
+                cleaned = cleaned.replace(/,\s*]\s*$/g, ']');     // Remove trailing ],
+                
+                // Ensure proper JSON structure ending
+                if (!cleaned.endsWith('}') && !cleaned.endsWith(']')) {
+                    // If it doesn't end properly, try to fix common patterns
+                    cleaned = cleaned.replace(/,\s*$/, ''); // Remove trailing comma
+                    
+                    // Count braces to see what's missing
+                    const openBraces = (cleaned.match(/\{/g) || []).length;
+                    const closeBraces = (cleaned.match(/\}/g) || []).length;
+                    const openBrackets = (cleaned.match(/\[/g) || []).length;
+                    const closeBrackets = (cleaned.match(/\]/g) || []).length;
+                    
+                    // Add missing closing brackets/braces
+                    for (let i = closeBrackets; i < openBrackets; i++) {
+                        cleaned += ']';
+                    }
+                    for (let i = closeBraces; i < openBraces; i++) {
+                        cleaned += '}';
+                    }
+                }
+                
+                // Clean up extra whitespace
+                cleaned = cleaned.replace(/\s+/g, ' ');
                 
                 // Try to find JSON within text (if pasted from a larger document)
                 const jsonMatch = cleaned.match(/[\[{].*[\]}]/s);
@@ -1056,54 +1099,213 @@
             try {
                 console.log('Attempting data recovery...');
                 
+                // First try to fix the most common issues and structure problems
+                let cleanedText = text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ' ');
+                cleanedText = cleanedText.replace(/"([^"]*?)\n+([^"]*?)"/g, '"$1 $2"');
+                
+                // Fix the malformed ending - this is crucial for Brown Schools JSON
+                cleanedText = cleanedText.replace(/,\s*}\s*,?\s*$/, '}]}');
+                cleanedText = cleanedText.replace(/}\s*,\s*$/, '}]}');
+                
+                // Try direct parse first
+                try {
+                    const directParse = JSON.parse(cleanedText);
+                    console.log('Direct parse successful after cleaning');
+                    return adaptJSONStructure(directParse);
+                } catch (e) {
+                    console.log('Direct parse failed:', e.message.substring(0, 100));
+                }
+                
                 const recoveredData = {
                     operator: { name: "", location: "", operatingPeriod: "" },
                     facilities: []
                 };
                 
-                // Try to extract operator info
-                const operatorPatterns = [
-                    /"operator"\s*:\s*{[^{}]*"name"\s*:\s*"([^"]*)"[^{}]*}/,
-                    /"name"\s*:\s*"([^"]*)".*"location"\s*:\s*"([^"]*)".*"operatingPeriod"\s*:\s*"([^"]*)"/
-                ];
-                
-                for (const pattern of operatorPatterns) {
-                    const match = text.match(pattern);
-                    if (match) {
-                        recoveredData.operator.name = match[1] || "";
-                        if (match[2]) recoveredData.operator.location = match[2];
-                        if (match[3]) recoveredData.operator.operatingPeriod = match[3];
-                        break;
-                    }
+                // Extract operator info
+                const operatorMatch = cleanedText.match(/"operator"\s*:\s*\{[^{}]*?"name"\s*:\s*"([^"]*)"[^{}]*?\}/);
+                if (operatorMatch) {
+                    recoveredData.operator.name = operatorMatch[1] || "";
                 }
                 
-                // Try to extract facilities - look for objects with identification
-                const facilityMatches = text.match(/{\s*"identification"[\s\S]*?(?=},\s*{|\]\s*})/g);
-                if (facilityMatches && facilityMatches.length > 0) {
-                    console.log(`Found ${facilityMatches.length} potential facilities`);
-                    
-                    facilityMatches.forEach((match, index) => {
-                        try {
-                            // Clean up the match and try to parse it
-                            let facilityJson = match;
-                            if (!facilityJson.endsWith('}')) facilityJson += '}';
-                            
-                            const cleaned = preprocessJSON(facilityJson);
-                            const facility = JSON.parse(cleaned);
-                            
-                            if (facility && facility.identification) {
-                                recoveredData.facilities.push(facility);
-                                console.log(`Successfully recovered facility ${index + 1}: ${facility.identification.name || 'Unnamed'}`);
-                            }
-                        } catch (e) {
-                            console.log(`Could not recover facility ${index + 1}:`, e.message);
-                        }
+                // NEW APPROACH: Find all facility name instances and extract surrounding context
+                console.log('Starting comprehensive facility extraction...');
+                
+                const facilityNameRegex = /"identification"\s*:\s*\{\s*"name"\s*:\s*"([^"]+)"/g;
+                const facilityNames = [];
+                let nameMatch;
+                
+                while ((nameMatch = facilityNameRegex.exec(cleanedText)) !== null) {
+                    facilityNames.push({
+                        name: nameMatch[1],
+                        startIndex: nameMatch.index
                     });
+                }
+                
+                console.log(`Found ${facilityNames.length} facility names:`, facilityNames.map(f => f.name));
+                
+                if (facilityNames.length === 0) {
+                    console.log('No facility names found, aborting recovery');
+                    return null;
+                }
+                
+                // For each facility name, try to extract the complete facility object
+                for (let i = 0; i < facilityNames.length; i++) {
+                    const currentFacility = facilityNames[i];
+                    const nextFacility = facilityNames[i + 1];
+                    
+                    try {
+                        let facilityStart = currentFacility.startIndex;
+                        
+                        // Find the opening brace for this facility object
+                        while (facilityStart > 0 && cleanedText[facilityStart] !== '{') {
+                            facilityStart--;
+                        }
+                        
+                        let facilityEnd;
+                        if (nextFacility) {
+                            // End just before the next facility
+                            facilityEnd = nextFacility.startIndex;
+                            while (facilityEnd > facilityStart && cleanedText[facilityEnd - 1] !== '}') {
+                                facilityEnd--;
+                            }
+                        } else {
+                            // This is the last facility, find the end of the object
+                            facilityEnd = cleanedText.length;
+                            
+                            // Look backwards for the last closing brace
+                            for (let j = cleanedText.length - 1; j > facilityStart; j--) {
+                                if (cleanedText[j] === '}') {
+                                    facilityEnd = j + 1;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        let facilityText = cleanedText.substring(facilityStart, facilityEnd).trim();
+                        
+                        // Clean up the facility text
+                        facilityText = facilityText.replace(/,$/, ''); // Remove trailing comma
+                        
+                        // Ensure it's a proper JSON object
+                        if (!facilityText.endsWith('}')) {
+                            facilityText += '}';
+                        }
+                        
+                        // Count and balance braces
+                        let openBraces = 0;
+                        let closeBraces = 0;
+                        let inString = false;
+                        
+                        for (let j = 0; j < facilityText.length; j++) {
+                            const char = facilityText[j];
+                            if (char === '"' && facilityText[j-1] !== '\\') {
+                                inString = !inString;
+                            } else if (!inString) {
+                                if (char === '{') openBraces++;
+                                else if (char === '}') closeBraces++;
+                            }
+                        }
+                        
+                        // Add missing closing braces
+                        while (closeBraces < openBraces) {
+                            facilityText += '}';
+                            closeBraces++;
+                        }
+                        
+                        // Try to parse this facility
+                        const facility = JSON.parse(facilityText);
+                        
+                        if (facility && facility.identification && facility.identification.name) {
+                            // Standardize the facility structure
+                            const standardFacility = {
+                                identification: {
+                                    name: facility.identification.name || "",
+                                    currentName: facility.identification.currentName || "",
+                                    currentOperator: facility.identification.currentOperator || "",
+                                    pastNames: facility.identification.pastNames || []
+                                },
+                                location: facility.location || "",
+                                address: facility.address || "",
+                                pastOperators: facility.pastOperators || [],
+                                operatingPeriod: {
+                                    startYear: facility.operatingPeriod?.startYear || null,
+                                    endYear: facility.operatingPeriod?.endYear || null,
+                                    status: facility.operatingPeriod?.status || "unknown"
+                                },
+                                staff: {
+                                    administrator: facility.staff?.administrator || [],
+                                    notableStaff: facility.staff?.notableStaff || []
+                                },
+                                profileLinks: facility.profileLinks || [],
+                                facilityDetails: {
+                                    type: facility.facilityDetails?.type || "",
+                                    capacity: facility.facilityDetails?.capacity || null,
+                                    currentCensus: facility.facilityDetails?.currentCensus || null,
+                                    ageRange: {
+                                        min: facility.facilityDetails?.ageRange?.min || null,
+                                        max: facility.facilityDetails?.ageRange?.max || null
+                                    },
+                                    gender: facility.facilityDetails?.gender || ""
+                                },
+                                membershipsAccreditations: facility.membershipsAccreditations || [],
+                                incidents: facility.incidents || [],
+                                documents: facility.documents || {
+                                    parentManual: { available: false, year: null, notes: "" },
+                                    studentManual: { available: false, year: null, notes: "" },
+                                    staffManual: { available: false, year: null, notes: "" },
+                                    newsArticles: { available: false, count: 0, notes: "" },
+                                    stateReports: { available: false, count: 0, notes: "" },
+                                    lawsuit: { available: false, count: 0, notes: "" },
+                                    testimonials: { available: false, count: 0, notes: "" }
+                                },
+                                notes: facility.notes || []
+                            };
+                            
+                            recoveredData.facilities.push(standardFacility);
+                            console.log(`Successfully recovered facility ${i + 1}: ${facility.identification.name}`);
+                        }
+                        
+                    } catch (e) {
+                        console.log(`Failed to recover facility ${i + 1} (${currentFacility.name}):`, e.message.substring(0, 100));
+                        
+                        // If parsing failed, create a minimal facility with just the name
+                        recoveredData.facilities.push({
+                            identification: {
+                                name: currentFacility.name,
+                                currentName: "",
+                                currentOperator: "",
+                                pastNames: []
+                            },
+                            location: "",
+                            address: "",
+                            pastOperators: [],
+                            operatingPeriod: { startYear: null, endYear: null, status: "unknown" },
+                            staff: { administrator: [], notableStaff: [] },
+                            profileLinks: [],
+                            facilityDetails: {
+                                type: "", capacity: null, currentCensus: null,
+                                ageRange: { min: null, max: null }, gender: ""
+                            },
+                            membershipsAccreditations: [],
+                            incidents: [],
+                            documents: {
+                                parentManual: { available: false, year: null, notes: "" },
+                                studentManual: { available: false, year: null, notes: "" },
+                                staffManual: { available: false, year: null, notes: "" },
+                                newsArticles: { available: false, count: 0, notes: "" },
+                                stateReports: { available: false, count: 0, notes: "" },
+                                lawsuit: { available: false, count: 0, notes: "" },
+                                testimonials: { available: false, count: 0, notes: "" }
+                            },
+                            notes: []
+                        });
+                        console.log(`Created minimal facility entry for: ${currentFacility.name}`);
+                    }
                 }
                 
                 if (recoveredData.facilities.length > 0 || recoveredData.operator.name) {
                     console.log(`Recovery successful: ${recoveredData.facilities.length} facilities, operator: ${recoveredData.operator.name}`);
-                    return adaptJSONStructure(recoveredData);
+                    return recoveredData; // Return directly, don't call adaptJSONStructure again
                 }
                 
                 return null;
@@ -1120,64 +1322,85 @@
             }
             
             console.log('Loading JSON data, length:', jsonString.length);
+            showUploadStatus('Processing large dataset...', 'info');
             
-            try {
-                // Step 1: Preprocess the JSON
-                console.log('Preprocessing JSON...');
-                const cleanedJson = preprocessJSON(jsonString);
-                
-                // Step 2: Try parsing
-                console.log('Parsing JSON...');
-                let data;
-                
+            // Use setTimeout to prevent UI blocking for large files
+            setTimeout(() => {
                 try {
-                    data = JSON.parse(cleanedJson);
-                    console.log('JSON parsed successfully');
-                } catch (parseError) {
-                    console.log('Initial parse failed:', parseError.message);
+                    // Step 1: Preprocess the JSON
+                    console.log('Preprocessing JSON...');
+                    const cleanedJson = preprocessJSON(jsonString);
                     
-                    // Try recovery
-                    console.log('Attempting recovery...');
-                    const recoveredData = attemptDataRecovery(jsonString);
-                    if (recoveredData) {
-                        data = recoveredData;
-                        showUploadStatus('Partially recovered data from malformed JSON. Please verify the results.', 'info');
-                    } else {
-                        throw parseError;
+                    // Step 2: Try parsing
+                    console.log('Parsing JSON...');
+                    let data;
+                    
+                    try {
+                        data = JSON.parse(cleanedJson);
+                        console.log('JSON parsed successfully');
+                    } catch (parseError) {
+                        console.log('Initial parse failed:', parseError.message);
+                        
+                        // Try recovery
+                        console.log('Attempting recovery...');
+                        const recoveredData = attemptDataRecovery(jsonString);
+                        if (recoveredData) {
+                            data = recoveredData;
+                            showUploadStatus('Partially recovered data from malformed JSON. Please verify the results.', 'info');
+                        } else {
+                            throw parseError;
+                        }
                     }
+                    
+                    // Step 3: Adapt structure
+                    console.log('Adapting JSON structure...');
+                    let loadedData = adaptJSONStructure(data);
+                    
+                    // Step 4: Load the adapted data
+                    const facilityCount = loadedData.facilities.length;
+                    console.log(`Loading ${facilityCount} facilities...`);
+                    
+                    if (facilityCount > 20) {
+                        showUploadStatus(`Processing ${facilityCount} facilities... This may take a moment.`, 'info');
+                    }
+                    
+                    formData = loadedData;
+                    currentFacilityIndex = 0;
+                    
+                    // Step 5: Clear the textarea
+                    document.getElementById('json-paste').value = '';
+                    
+                    // Step 6: Update all UI elements (optimized for large datasets)
+                    setTimeout(() => {
+                        loadOperatorData();
+                        loadFacilityData();
+                        updateFacilityControls();
+                        
+                        // Defer JSON display update for very large files
+                        setTimeout(() => {
+                            updateJSON();
+                        }, 100);
+                        
+                        let successMessage = `Successfully loaded ${facilityCount} facilities.`;
+                        if (facilityCount > 50) {
+                            successMessage += ' Large dataset loaded successfully. Use facility navigation to browse through all entries.';
+                        }
+                        
+                        showUploadStatus(successMessage, 'success');
+                    }, 50);
+                    
+                } catch (error) {
+                    console.error('JSON loading failed:', error);
+                    
+                    let errorDetails = `Error: ${error.message}`;
+                    const fileSizeMB = (jsonString.length / 1024 / 1024).toFixed(1);
+                    if (jsonString.length > 100000) {
+                        errorDetails += `\n\nFile size: ${fileSizeMB}MB`;
+                    }
+                    
+                    showUploadStatus(`Could not parse the data. ${errorDetails}`, 'error', errorDetails);
                 }
-                
-                // Step 3: Adapt structure
-                console.log('Adapting JSON structure...');
-                let loadedData = adaptJSONStructure(data);
-                
-                // Step 4: Load the adapted data
-                console.log(`Loading ${loadedData.facilities.length} facilities...`);
-                formData = loadedData;
-                currentFacilityIndex = 0;
-                
-                // Step 5: Clear the textarea
-                document.getElementById('json-paste').value = '';
-                
-                // Step 6: Update all UI elements
-                loadOperatorData();
-                loadFacilityData();
-                updateFacilityControls();
-                updateJSON();
-                
-                showUploadStatus(`Successfully loaded data with ${loadedData.facilities.length} facility(ies). Data has been cleaned and validated.`, 'success');
-                
-            } catch (error) {
-                console.error('JSON loading failed:', error);
-                
-                // Show detailed error information
-                let errorDetails = `Error: ${error.message}`;
-                if (jsonString.length > 1000) {
-                    errorDetails += `\n\nFile size: ${jsonString.length} characters (large files may have issues)`;
-                }
-                
-                showUploadStatus(`Could not parse the data. ${errorDetails}`, 'error', errorDetails);
-            }
+            }, 10);
         }
 
         // PROJECT MANAGEMENT FUNCTIONS
@@ -1415,29 +1638,157 @@
         }
         
         function updateJSON() {
-            document.getElementById('json-display').textContent = JSON.stringify(formData, null, 2);
+            // For very large datasets, add a delay to prevent UI blocking
+            const facilityCount = formData.facilities.length;
+            if (facilityCount > 30) {
+                setTimeout(() => {
+                    document.getElementById('json-display').textContent = JSON.stringify(formData, null, 2);
+                }, 50);
+            } else {
+                document.getElementById('json-display').textContent = JSON.stringify(formData, null, 2);
+            }
         }
         
         function updateFacilityControls() {
             const counter = document.getElementById('facility-counter');
             const selector = document.getElementById('facility-selector');
             const removeBtn = document.getElementById('remove-facility-btn');
+            const totalFacilities = formData.facilities.length;
             
-            counter.textContent = `${currentFacilityIndex + 1} of ${formData.facilities.length}`;
+            counter.textContent = `${currentFacilityIndex + 1} of ${totalFacilities}`;
             
-            if (formData.facilities.length > 1) {
+            if (totalFacilities > 1) {
                 selector.style.display = 'flex';
                 removeBtn.style.display = 'inline-block';
                 
                 selector.innerHTML = '';
-                formData.facilities.forEach((facility, index) => {
-                    const btn = document.createElement('button');
-                    btn.className = `facility-btn ${index === currentFacilityIndex ? 'active' : ''}`;
-                    const name = facility.identification?.name || `Facility ${index + 1}`;
-                    btn.textContent = name.length > 15 ? name.substring(0, 15) + '...' : name;
-                    btn.onclick = () => switchFacility(index);
-                    selector.appendChild(btn);
-                });
+                
+                // For large datasets (50+ facilities), show navigation controls instead of all buttons
+                if (totalFacilities > 50) {
+                    // Add navigation controls for large datasets
+                    const navContainer = document.createElement('div');
+                    navContainer.style.display = 'flex';
+                    navContainer.style.alignItems = 'center';
+                    navContainer.style.gap = '10px';
+                    navContainer.style.flexWrap = 'wrap';
+                    
+                    // Previous/Next buttons
+                    const prevBtn = document.createElement('button');
+                    prevBtn.className = 'facility-btn';
+                    prevBtn.textContent = '◀ Previous';
+                    prevBtn.disabled = currentFacilityIndex === 0;
+                    prevBtn.onclick = () => switchFacility(currentFacilityIndex - 1);
+                    navContainer.appendChild(prevBtn);
+                    
+                    // Current facility info
+                    const currentInfo = document.createElement('span');
+                    currentInfo.style.padding = '8px 16px';
+                    currentInfo.style.background = '#f8fafc';
+                    currentInfo.style.borderRadius = '6px';
+                    currentInfo.style.fontSize = '14px';
+                    currentInfo.style.fontWeight = '500';
+                    const currentName = formData.facilities[currentFacilityIndex].identification?.name || `Facility ${currentFacilityIndex + 1}`;
+                    currentInfo.textContent = currentName.length > 30 ? currentName.substring(0, 30) + '...' : currentName;
+                    navContainer.appendChild(currentInfo);
+                    
+                    const nextBtn = document.createElement('button');
+                    nextBtn.className = 'facility-btn';
+                    nextBtn.textContent = 'Next ▶';
+                    nextBtn.disabled = currentFacilityIndex === totalFacilities - 1;
+                    nextBtn.onclick = () => switchFacility(currentFacilityIndex + 1);
+                    navContainer.appendChild(nextBtn);
+                    
+                    // Jump to facility dropdown
+                    const jumpSelect = document.createElement('select');
+                    jumpSelect.style.padding = '6px 10px';
+                    jumpSelect.style.borderRadius = '4px';
+                    jumpSelect.style.border = '1px solid #d1d5db';
+                    jumpSelect.style.fontSize = '14px';
+                    jumpSelect.style.marginLeft = '15px';
+                    
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = 'Jump to facility...';
+                    jumpSelect.appendChild(defaultOption);
+                    
+                    formData.facilities.forEach((facility, index) => {
+                        const option = document.createElement('option');
+                        option.value = index;
+                        const name = facility.identification?.name || `Facility ${index + 1}`;
+                        option.textContent = `${index + 1}. ${name}`;
+                        jumpSelect.appendChild(option);
+                    });
+                    
+                    jumpSelect.onchange = function() {
+                        if (this.value !== '') {
+                            switchFacility(parseInt(this.value));
+                            this.value = '';
+                        }
+                    };
+                    navContainer.appendChild(jumpSelect);
+                    
+                    selector.appendChild(navContainer);
+                    
+                } else if (totalFacilities > 20) {
+                    // For medium datasets (20-50), show current +/- 5 facilities and navigation
+                    const start = Math.max(0, currentFacilityIndex - 5);
+                    const end = Math.min(totalFacilities, currentFacilityIndex + 6);
+                    
+                    // Add "First" button if not at start
+                    if (start > 0) {
+                        const firstBtn = document.createElement('button');
+                        firstBtn.className = 'facility-btn';
+                        firstBtn.textContent = '1';
+                        firstBtn.onclick = () => switchFacility(0);
+                        selector.appendChild(firstBtn);
+                        
+                        if (start > 1) {
+                            const ellipsis = document.createElement('span');
+                            ellipsis.textContent = '...';
+                            ellipsis.style.padding = '8px';
+                            selector.appendChild(ellipsis);
+                        }
+                    }
+                    
+                    // Show range around current facility
+                    for (let i = start; i < end; i++) {
+                        const btn = document.createElement('button');
+                        btn.className = `facility-btn ${i === currentFacilityIndex ? 'active' : ''}`;
+                        const name = formData.facilities[i].identification?.name || `Facility ${i + 1}`;
+                        btn.textContent = name.length > 12 ? `${i + 1}` : (name.length > 8 ? name.substring(0, 8) + '...' : name);
+                        btn.title = name; // Show full name on hover
+                        btn.onclick = () => switchFacility(i);
+                        selector.appendChild(btn);
+                    }
+                    
+                    // Add "Last" button if not at end
+                    if (end < totalFacilities) {
+                        if (end < totalFacilities - 1) {
+                            const ellipsis = document.createElement('span');
+                            ellipsis.textContent = '...';
+                            ellipsis.style.padding = '8px';
+                            selector.appendChild(ellipsis);
+                        }
+                        
+                        const lastBtn = document.createElement('button');
+                        lastBtn.className = 'facility-btn';
+                        lastBtn.textContent = totalFacilities.toString();
+                        lastBtn.onclick = () => switchFacility(totalFacilities - 1);
+                        selector.appendChild(lastBtn);
+                    }
+                    
+                } else {
+                    // For smaller datasets (2-20), show all facility buttons
+                    formData.facilities.forEach((facility, index) => {
+                        const btn = document.createElement('button');
+                        btn.className = `facility-btn ${index === currentFacilityIndex ? 'active' : ''}`;
+                        const name = facility.identification?.name || `Facility ${index + 1}`;
+                        btn.textContent = name.length > 15 ? name.substring(0, 15) + '...' : name;
+                        btn.title = name; // Show full name on hover
+                        btn.onclick = () => switchFacility(index);
+                        selector.appendChild(btn);
+                    });
+                }
             } else {
                 selector.style.display = 'none';
                 removeBtn.style.display = 'none';
